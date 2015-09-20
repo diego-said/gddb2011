@@ -106,20 +106,19 @@ public class GooglonParserTest {
         parser = new GooglonParser(input);
     }
 
-
     @Test
-    public void testPreposition() {
-        assertEquals(true, parser.isPreposition("jgs"));
-    }
-
-    @Test
-    public void testNotPreposition() {
-        assertEquals(false, parser.isPreposition("jtfhctpv"));
-    }
-
-    @Test
-    public void testCount() {
+    public void testCountPrepositions() {
         assertEquals(66, parser.countPrepositions());
+    }
+
+    @Test
+    public void testCountVerbs() {
+        assertEquals(26, parser.countVerbs());
+    }
+
+    @Test
+    public void testCountFirstPersonVerbs() {
+        assertEquals(4, parser.countFirstPersonVerbs());
     }
 
 }

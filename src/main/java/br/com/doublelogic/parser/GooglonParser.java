@@ -15,7 +15,6 @@ public class GooglonParser {
         int total = 0;
         for (String word : words) {
             if (isPreposition(word)) {
-                System.out.println(word);
                 total++;
             }
         }
@@ -32,6 +31,53 @@ public class GooglonParser {
         if(word != null) {
             return word.matches("[^d]{2}[^hckxbd]");
 
+        }
+        return false;
+    }
+
+    public int countVerbs() {
+        int total = 0;
+        for (String word : words) {
+            if (isVerb(word)) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * Um outro fato interessante descoberto pelos linguistas é que, no Googlon, os verbos sempre
+     * são palavras de 8 ou mais letras que terminam numa letra tipo foo.
+     * @param word palavra para ser testada
+     * @return <tt>true</tt> caso a plavra seja um verbo
+     */
+    public boolean isVerb(String word) {
+        if(word != null) {
+            return word.matches("\\w{7,}[hckxb]");
+        }
+        return false;
+    }
+
+    public int countFirstPersonVerbs() {
+        int total = 0;
+        for (String word : words) {
+            if (isVerbFirstPerson(word)) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * Um outro fato interessante descoberto pelos linguistas é que, no Googlon, os verbos sempre
+     * são palavras de 8 ou mais letras que terminam numa letra tipo foo. Além disso, se um verbo
+     * começa com uma letra tipo foo, o verbo está em primeira pessoa.
+     * @param word palavra para ser testada
+     * @return <tt>true</tt> caso a plavra seja um verbo em primeira pessoa
+     */
+    public boolean isVerbFirstPerson(String word) {
+        if(word != null) {
+            return word.matches("[hckxb]\\w{6,}[hckxb]");
         }
         return false;
     }
