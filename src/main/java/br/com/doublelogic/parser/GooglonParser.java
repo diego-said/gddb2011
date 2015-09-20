@@ -1,5 +1,9 @@
 package br.com.doublelogic.parser;
 
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
+import java.util.*;
+
 /**
  * Created by diegoalvessaidsimao on 18/09/15.
  */
@@ -80,6 +84,35 @@ public class GooglonParser {
             return word.matches("[hckxb]\\w{6,}[hckxb]");
         }
         return false;
+    }
+
+    /**
+     * Um professor universitário utilizará os textos A e B para ensinar o Googlon aos alunos. Para
+     * ajudar os alunos a compreender o texto, esse professor precisa criar uma lista de
+     * vocabulário para cada texto, isto é, uma lista ordenada (e sem repetições) das palavras que
+     * aparecem em cada um dos textos.
+     * Essas listas devem estar ordenadas e não podem conter repetições de palavras. No
+     * Googlon, assim como no nosso alfabeto, as palavras são ordenadas lexicograficamente, mas
+     * o problema é que no Googlon, a ordem das letras no alfabeto é diferente da nossa. O
+     * alfabeto Googlon, em ordem, é: tqjbnkgxrcdlfpzmvhsw. Assim, ao fazer essas listas, o
+     * professor deve respeitar a ordem alfabética Googlon.
+     * @return palavras ordenadas seguindo a ordem lexicográfica e sem repetição
+     * @throws ParseException
+     */
+    public List<String> getVocabulary() throws ParseException {
+        HashMap<String, String> map = new HashMap<>(words.length);
+        for (String word : words) {
+            if(word.matches("\\w+"))
+                map.put(word, word);
+        }
+
+        List<String> list = new ArrayList<>();
+        list.addAll(map.values());
+
+        final String lexicographicOrder = "<t<q<j<b<n<k<g<x<r<c<d<l<f<p<z<m<v<h<s<w";
+        Collections.sort(list, new RuleBasedCollator(lexicographicOrder));
+
+        return list;
     }
 
 }
