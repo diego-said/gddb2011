@@ -1,5 +1,6 @@
 package br.com.doublelogic.parser;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.RuleBasedCollator;
 import java.util.*;
@@ -10,6 +11,7 @@ import java.util.*;
 public class GooglonParser {
 
     private final String[] words;
+    private final static String ALPHABET = "tqjbnkgxrcdlfpzmvhsw";
 
     public GooglonParser(String input) {
         words = input.split("\\s");
@@ -113,6 +115,53 @@ public class GooglonParser {
         Collections.sort(list, new RuleBasedCollator(lexicographicOrder));
 
         return list;
+    }
+
+    /**
+     * Mas como os Googlons escrevem números? Bem, no Googlon, as palavras também são
+     * números dados em base 20, onde cada letra é um dígito, e os dígitos são ordenados
+     * do menos significativo para o mais significativo (o inverso do nosso sistema). Ou seja, a
+     * primeira posição é a unidade, a segunda posição vale 20, a terceira vale 400, e assim por
+     * diante. Os valores das letras são dados pela ordem em que elas aparecem no alfabeto
+     * Googlon (que é diferente da nossa ordem, como vimos acima). Ou seja, a primeira letra do
+     * alfabeto Googlon representa o dígito 0, a segunda representa o dígito 1, e assim por diante.
+     * @param word palavra para ser transformada em um número
+     * @return valor numérico da palvra convertida em base 20
+     */
+    public BigInteger getNumberBase20(String word) {
+        long value;
+        char c;
+        BigInteger result = new BigInteger("0");
+        BigInteger base = new BigInteger("20");
+
+        for (int i = 0; i < word.length(); i++) {
+
+            c = word.charAt(i);
+            value = ALPHABET.indexOf(c);
+            result = result.add(base.pow(i).multiply(BigInteger.valueOf(value)));
+        }
+
+        return result;
+    }
+
+    /**
+     * Os Googlons consideram um número bonito se ele satisfaz essas duas propriedades:
+     * - é maior ou igual a 444741
+     * - é divisível por 3
+     * @return total de números bonitos
+     */
+    public int countPrettyNumbers() {
+        HashMap<BigInteger, BigInteger> prettyNumbers = new HashMap<>(words.length);
+        for (String word : words) {
+            if(word.matches("\\w+")) {
+                final BigInteger value = getNumberBase20(word);
+                if (value.compareTo(BigInteger.valueOf(444741)) >= 0 &&
+                        value.mod(BigInteger.valueOf(3)).compareTo(BigInteger.valueOf(0)) == 0) {
+                    prettyNumbers.put(value, value);
+                }
+            }
+        }
+        return prettyNumbers.size();
     }
 
 }

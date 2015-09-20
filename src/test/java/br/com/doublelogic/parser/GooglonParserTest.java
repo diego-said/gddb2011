@@ -3,13 +3,13 @@ package br.com.doublelogic.parser;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by diegoalvessaidsimao on 18/09/15.
@@ -182,4 +182,13 @@ public class GooglonParserTest {
         assertEquals(vocabulary, result);
     }
 
+    @Test
+    public void testGetNumberBase20() {
+        assertEquals(BigInteger.valueOf(43872), parser.getNumberBase20("fpck"));
+    }
+
+    @Test
+    public void testCountPrettyNumbers() {
+        assertEquals(142, parser.countPrettyNumbers());
+    }
 }
